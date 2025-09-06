@@ -3,7 +3,7 @@ import pygame
 pygame.init()
 
 largura, altura = 600, 600
-cont = 1
+cont = 0
 
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Jogo da Velha')
@@ -26,11 +26,11 @@ def desenhar_x(linha, coluna):
     pygame.draw.line(tela, preto, (x+200-margem, y+margem), (x+margem, y+200-margem), 10)
 
 def desenhar_o(linha, coluna):
-    x = coluna * 200
-    y = linha * 200
-    margem = 30
-    pygame.draw.circle(tela, preto, (x+margem, y+margem), (x+200-margem, y+200-margem), 10)
-    pygame.draw.circle(tela, preto, (x+200-margem, y+margem), (x+margem, y+200-margem), 10)
+    x = coluna * 200 + 100
+    y = linha * 200 + 100
+    raio = 70
+    pygame.draw.circle(tela, preto, (x, y), raio, 10)
+    pygame.draw.circle(tela, preto, (x, y), raio, 10)
 
 rodando = True
 while rodando:
@@ -38,22 +38,16 @@ while rodando:
         if evento.type == pygame.QUIT:
             rodando = False
 
-        if cont % 2 == 0:
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            x, y = evento.pos
+            coluna = x // 200
+            linha = y // 200
 
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                x, y = evento.pos
-                coluna = x // 200
-                linha = y // 200
+            if cont % 2 == 0:
                 desenhar_o(linha, coluna)
-
-        else:
-            
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                x, y = evento.pos
-                coluna = x // 200
-                linha = y // 200
+            else:
                 desenhar_x(linha, coluna)
-
+                
             cont += 1
 
     pygame.display.update()
