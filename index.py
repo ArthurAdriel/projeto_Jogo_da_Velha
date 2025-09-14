@@ -5,6 +5,7 @@ pygame.init()
 largura, altura = 600, 600
 cont = 0
 rodar_jogo = False
+tabuleiro = [[None for _ in range(3)] for _ in range(3)]
 
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Jogo da Velha')
@@ -53,23 +54,25 @@ while rodando:
 
         if evento.type == pygame.MOUSEBUTTONDOWN:
             x, y = evento.pos
-
+            coluna = x // 200
+            linha = y // 200
+            
             if rodar_jogo == False:
                 if x > 200 and x < 400 and y > 250 and y < 350:
                     rodar_jogo = True
                     desenhar_grade()
             else:
-                coluna = x // 200
-                linha = y // 200
+                if tabuleiro[linha][coluna] is None:
 
-                if cont % 2 == 0:
-                    desenhar_o(linha, coluna)
-                else:
-                    desenhar_x(linha, coluna)
-                            
-                cont += 1
+                    if cont % 2 == 0:
+                        desenhar_o(linha, coluna)
+                        tabuleiro[linha][coluna] = 'O'
+                    else:
+                        desenhar_x(linha, coluna)
+                        tabuleiro[linha][coluna] = 'X'
+                                
+                    cont += 1
 
     pygame.display.update()
 
 pygame.quit()
-print(cont)
