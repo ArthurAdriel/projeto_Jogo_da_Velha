@@ -6,9 +6,7 @@ pygame.init()
 largura, altura = 600, 600
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption('Jogo da Velha')
-tabuleiro = [[None for _ in range(3)] for _ in range(3)]
 
-cont = 0
 estado = 'menu'
 
 branco = (255, 255, 255)
@@ -60,7 +58,22 @@ def verificar_vencedor(tabuleiro):
     
     if tabuleiro[0][2] == tabuleiro[1][1] == tabuleiro[2][0] and tabuleiro[0][2] is not None:
         return tabuleiro[0][2]
+    
+def tela_de_saida(vencedor):
+    tela.fill((branco))
+    if vencedor is not None:
+        msg_vencedor = fonte_titulo.render(f'O jogador {vencedor} ganhou!', True, preto)
+        tela.blit(msg_vencedor, (65, 50))
+    else:
+        msg_vencedor = fonte_titulo.render(f'O jogo deu velha!', True, preto)
+        tela.blit(msg_vencedor, (85, 50))
 
+    pygame.draw.rect(tela, preto, (200, 200, 200, 100), 0)
+    pygame.draw.rect(tela, preto, (200, 400, 200, 100), 0)
+    msg_reinicio = fonte_botao.render('Jogar denovo', True, branco)
+    msg_sair = fonte_botao.render('Sair', True, branco)
+    tela.blit(msg_reinicio, (232, 240))
+    tela.blit(msg_sair, (280, 440))
 
 desenhar_menu()
 
@@ -93,14 +106,21 @@ while rodando:
                     cont += 1            
                     
                     vencedor = verificar_vencedor(tabuleiro)
-                    if vencedor is not None or cont == cont == 9:
+                    if vencedor is not None or cont == 9:
                         estado = 'fim'
                         tempo_fim = time.time()
 
+            elif estado == 'opcoes':
+                tela_de_saida(vencedor)
+                if x > 200 and x < 400 and y > 200 and y < 300:
+                    estado = 'menu'
+                    desenhar_menu()
+                if x > 200 and x < 400 and y > 400 and y < 500:
+                    rodando = False
     if estado == 'fim':
         if time.time() - tempo_fim >= 2:
-            desenhar_menu()
-            estado = 'menu'
+            estado = 'opcoes'
+            tela_de_saida(vencedor)
 
     pygame.display.update()
 
