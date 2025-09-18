@@ -44,19 +44,33 @@ def desenhar_o(linha, coluna):
     pygame.draw.circle(tela, preto, (x, y), raio, 10)
     pygame.draw.circle(tela, preto, (x, y), raio, 10)
 
-def verificar_vencedor(tabuleiro):
-    for linha in tabuleiro:
+def marcar_vencedor(tabuleiro):
+    for c, linha in enumerate(tabuleiro):
         if linha[0] == linha[1] == linha[2] and linha[0] is not None:
+            if c == 0:
+                pygame.draw.line(tela, preto, (25, 100), (575, 100), 10)
+            elif c == 1:
+                pygame.draw.line(tela, preto, (25, 300), (575, 300), 10)
+            elif c == 2:
+                pygame.draw.line(tela, preto, (25, 500), (575, 500), 10)
             return linha[0]
     
     for c in range(3):
         if tabuleiro[0][c] == tabuleiro[1][c] == tabuleiro[2][c] and tabuleiro[0][c] is not None:
+            if c == 0:
+                pygame.draw.line(tela, preto, (100, 25), (100, 575), 10)
+            elif c == 1:
+                pygame.draw.line(tela, preto, (300, 25), (300, 575), 10)
+            elif c == 2:
+                pygame.draw.line(tela, preto, (500, 25), (500, 575), 10)
             return tabuleiro[0][c]
         
     if tabuleiro[0][0] == tabuleiro[1][1] == tabuleiro[2][2] and tabuleiro[0][0] is not None:
+        pygame.draw.line(tela, preto, (50, 50), (550, 550), 20)
         return tabuleiro[0][0]
     
     if tabuleiro[0][2] == tabuleiro[1][1] == tabuleiro[2][0] and tabuleiro[0][2] is not None:
+        pygame.draw.line(tela, preto, (50, 550), (550, 50), 20)
         return tabuleiro[0][2]
     
 def tela_de_saida(vencedor):
@@ -105,7 +119,7 @@ while rodando:
                         tabuleiro[linha][coluna] = 'X'
                     cont += 1            
                     
-                    vencedor = verificar_vencedor(tabuleiro)
+                    vencedor = marcar_vencedor(tabuleiro)
                     if vencedor is not None or cont == 9:
                         estado = 'fim'
                         tempo_fim = time.time()
